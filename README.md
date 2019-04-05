@@ -28,18 +28,19 @@ Dieses Modul wurde aufgezeichnet und ist in der Office-Entwicklungs-YouTube-Kana
 
 ## <a name="contributors"></a>Mitarbeiter
 
-|        Rollen         |                            Autor (e)                             |
+| Rollen                | Autor (e)                                                        |
 | -------------------- | ---------------------------------------------------------------- |
-| Übungs Handbücher/-Folien | Andrew Connell (Microsoft MVP, Voitanos) @andrewconnell          |
-| QA                   | Julie Turner (Microsoft MVP, Sympraxis Consulting) @juliemturner |
-| Sponsor/Support    | Yina Arenas (Microsoft) @yina_arenas                             |
+| Übungs Handbücher/-Folien | Andrew Connell (Microsoft MVP, Voitanos)@andrewconnell          |
+| QA                   | Julie Turner (Microsoft MVP, Sympraxis Consulting)@juliemturner |
+| Sponsor/Support    | Yina Arenas (Microsoft)@yina_arenas                             |
 
 ## <a name="version-history"></a>Versionsverlauf
 
-| Version |        Datum        |                       Kommentare                       |
+| Version | Datum               | Kommentare                                             |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1.7     | 6. März 2019      | 2019Q3-Inhaltsaktualisierung                               |
 | 1.6     | 19. Dezember 2018  | 2019Q2-Inhaltsaktualisierung                               |
-| 1.5     | 27. November 2018  | Onboarding zu docs.microsoft.com/graph                |
+| 1,5     | 27. November 2018  | Onboarding zu docs.microsoft.com/graph                |
 | 1.4     | November 2, 2018   | Überarbeitete Module für Konsistenz mit anderen Schulungen. |
 | 1.3     | 20. September 2018 | 2019Q1-Inhaltsaktualisierung                               |
 | 1.2     | 28. Juni 2018      | Screencast HinzugeFügt.                                    |
@@ -48,7 +49,7 @@ Dieses Modul wurde aufgezeichnet und ist in der Office-Entwicklungs-YouTube-Kana
 
 ## <a name="disclaimer"></a>Verzichtserklärung
 
-**DIESER CODE wird ohne ** Gewähr bereitgestellt, weder ausdrücklich noch implizit, einschließlich impliziter Garantien der Eignung für einen bestimmten Zweck, marktGÄNGIGKEIT oder Nichtverletzung.**
+**DIESER CODE wird ohne __ Gewähr bereitgestellt, weder ausdrücklich noch implizit, einschließlich impliziter Garantien der Eignung für einen bestimmten Zweck, marktGÄNGIGKEIT oder Nichtverletzung.**
 
 <!-- markdownlint-disable MD033 -->
 <img src="https://telemetry.sharepointpnp.com/msgraph-training-uwp" />
