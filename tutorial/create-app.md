@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Öffnen Sie Visual Studio, und wählen Sie **Datei _GT_ neues >-Projekt**aus. Führen Sie im Dialogfeld **Neues Projekt** folgende Aktionen aus:
+Öffnen Sie Visual Studio, und wählen Sie **Datei > neues >-Projekt**aus. Führen Sie im Dialogfeld **Neues Projekt** folgende Aktionen aus:
 
-1. Wählen Sie **Vorlagen _GT_ Visual C# _GT_ Windows Universal**aus.
+1. Wählen Sie **Vorlagen > Visual C# > Windows Universal**aus.
 1. Wählen Sie **leere app (universelle Fenster)** aus.
 1. Geben Sie **Graph-Tutorial** als Namen für das Projekt ein.
 
@@ -20,7 +20,7 @@ Bevor Sie fortfahren, installieren Sie einige zusätzliche NuGet-Pakete, die Sie
 - [Microsoft. Toolkit. UWP. UI. Controls. Graph](https://www.nuget.org/packages/Microsoft.Toolkit.Uwp.Ui.Controls.Graph/) , um den Anmelde-und Zugriffstoken Abruf zu behandeln.
 - [Microsoft. Graph](https://www.nuget.org/packages/Microsoft.Graph/) für Aufrufe von Microsoft Graph.
 
-Wählen Sie **Extras _GT_ NuGet Paket-Manager _GT_ Paket-Manager-Konsole**aus. Geben Sie in der Paket-Manager-Konsole die folgenden Befehle ein.
+Wählen Sie **Extras > NuGet Paket-Manager > Paket-Manager-Konsole**aus. Geben Sie in der Paket-Manager-Konsole die folgenden Befehle ein.
 
 ```Powershell
 Install-Package Microsoft.Toolkit.Uwp.Ui.Controls
@@ -89,7 +89,7 @@ Definieren Sie als nächstes das Layout für die Hauptseite. Öffnen `MainPage.x
 
 Dies definiert eine grundlegende [NavigationView](https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.navigationview) mit **Start** -und **Kalender** Navigationslinks, die als Hauptansicht der APP fungieren. Außerdem wird ein [AadLogin](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.uwp.ui.controls.graph.aadlogin?view=win-comm-toolkit-dotnet-stable) -Steuerelement in der Kopfzeile der Ansicht hinzugefügt. Dieses Steuerelement ermöglicht es dem Benutzer, sich anzumelden. Das Steuerelement ist noch nicht vollständig aktiviert, Sie werden es in einer späteren Übung konfigurieren.
 
-Fügen Sie nun eine weitere XAML-Seite für die Startansicht hinzu. Klicken Sie im projektMappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **_GT_ neues Element hinzufügen...**. Wählen Sie **leere Seite**aus `HomePage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus. Fügen Sie den folgenden Code innerhalb `<Grid>` des-Elements in der Datei hinzu.
+Fügen Sie nun eine weitere XAML-Seite für die Startansicht hinzu. Klicken Sie im Projektmappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **> neues Element hinzufügen...**. Wählen Sie **leere Seite**aus `HomePage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus. Fügen Sie den folgenden Code innerhalb `<Grid>` des-Elements in der Datei hinzu.
 
 ```xml
 <StackPanel>
@@ -145,6 +145,6 @@ private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvoke
 Speichern Sie alle Änderungen, und drücken Sie **F5** , oder wählen Sie **Debug > Start Debugging** in Visual Studio.
 
 > [!NOTE]
-> Stellen Sie sicher, dass Sie die entsprechende Konfiguration für Ihren Computer (ARM, x64, x86) ausgewählt haben.
+> Stellen Sie sicher, dass Sie die entsprechende Konfiguration für Ihren Computer (Arm, x64, x86) ausgewählt haben.
 
 ![Screenshot der Homepage](./images/create-app-01.png)

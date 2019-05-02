@@ -4,7 +4,7 @@ In dieser Übung integrieren Sie Microsoft Graph in die Anwendung. Für diese An
 
 ## <a name="get-calendar-events-from-outlook"></a>Abrufen von Kalenderereignissen aus Outlook
 
-Beginnen Sie mit dem Hinzufügen einer neuen Seite für die Kalenderansicht. Klicken Sie im projektMappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **_GT_ neues Element hinzufügen...**. Wählen Sie **leere Seite**aus `CalendarPage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus.
+Beginnen Sie mit dem Hinzufügen einer neuen Seite für die Kalenderansicht. Klicken Sie im Projektmappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **> neues Element hinzufügen...**. Wählen Sie **leere Seite**aus `CalendarPage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus.
 
 Öffnen `CalendarPage.xaml` Sie, und fügen Sie die folgende Codezeile `<Grid>` innerhalb des vorhandenen Elements hinzu.
 
@@ -129,7 +129,7 @@ EventList.ItemsSource = events.CurrentPage.ToList();
 
 Wenn Sie die APP jetzt ausführen und den Kalender auswählen, sollten Sie eine Liste der Ereignisse in einem Datenraster abrufen. Die **Start** -und Endwerte werden jedoch auf nicht benutzerfreundliche Weise angezeigt. **** Sie können steuern, wie diese Werte mit einem [Wertkonverter](https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Data.IValueConverter)angezeigt werden.
 
-Klicken Sie im projektMappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **_GT_-Klasse hinzufügen...**. Benennen Sie die `GraphDateTimeTimeZoneConverter.cs` Klasse, und wählen Sie **Hinzufügen**. Ersetzen Sie den gesamten Inhalt der Datei durch Folgendes.
+Klicken Sie im Projektmappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **>-Klasse hinzufügen...**. Benennen Sie die `GraphDateTimeTimeZoneConverter.cs` Klasse, und wählen Sie **Hinzufügen**. Ersetzen Sie den gesamten Inhalt der Datei durch Folgendes.
 
 ```cs
 using Microsoft.Graph;

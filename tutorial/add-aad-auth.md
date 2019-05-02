@@ -2,7 +2,7 @@
 
 In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung zur Unterstützung der Authentifizierung mit Azure AD. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken für den Aufruf von Microsoft Graph abzurufen. In diesem Schritt integrieren Sie das [AadLogin](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.uwp.ui.controls.graph.aadlogin?view=win-comm-toolkit-dotnet-stable) -Steuerelement aus dem [Windows-Community-Toolkit](https://github.com/Microsoft/WindowsCommunityToolkit) in die Anwendung.
 
-Klicken Sie im projektMappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **_GT_ neues Element hinzufügen...**. Wählen Sie **Ressourcendatei (. resw)** aus, benennen `OAuth.resw` Sie die Datei, und wählen Sie **Hinzufügen**aus. Wenn die neue Datei in Visual Studio geöffnet wird, erstellen Sie zwei Ressourcen wie folgt.
+Klicken Sie im Projektmappen-Explorer mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt, und wählen Sie **> neues Element hinzufügen...**. Wählen Sie **Ressourcendatei (. resw)** aus, benennen `OAuth.resw` Sie die Datei, und wählen Sie **Hinzufügen**aus. Wenn die neue Datei in Visual Studio geöffnet wird, erstellen Sie zwei Ressourcen wie folgt.
 
 - **Name:** `AppId`, **Value:** die APP-ID, die Sie im Anwendungs Registrierungs Portal generiert haben
 - **Name:** `Scopes`, **Wert:**`User.Read Calendars.Read`
