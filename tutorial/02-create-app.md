@@ -1,12 +1,12 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Öffnen Sie Visual Studio, und wählen Sie **Datei #a0 neues #a1 Projekt**aus. Führen Sie im Dialogfeld **Neues Projekt** folgende Schritte aus:
+Öffnen Sie Visual Studio, und wählen Sie **Neues Projekt erstellen**aus. Wählen Sie die Option **leere app (universelle Windows)** aus, die C# verwendet, und wählen Sie dann **weiter**aus.
 
-1. Wählen Sie **Vorlagen #a0 Visual C# #a1 Windows Universal**aus.
-1. Wählen Sie **leere app (universelle Fenster)** aus.
-1. Geben Sie **Graph-Tutorial** für den Namen des Projekts ein.
+![Visual Studio 2019 Dialogfeld "Neues Projekt erstellen"](./images/vs-create-new-project.png)
 
-![Visual Studio 2017 Dialogfeld "Neues Projekt erstellen"](./images/vs-newproj-01.png)
+Geben Sie im Dialogfeld **Neues Projekt konfigurieren** in `graph-tutorial` das Feld **Projektname** ein, und wählen Sie dann **Erstellen**aus.
+
+![Visual Studio 2019 Dialogfeld "Neues Projekt konfigurieren"](./images/vs-configure-new-project.png)
 
 > [!IMPORTANT]
 > Stellen Sie sicher, dass Sie genau den gleichen Namen für das Visual Studio Projekt eingeben, das in diesen Übungseinheiten angegeben ist. Der Visual Studio Projektname wird Teil des Namespaces im Code. Der Code in diesen Anweisungen hängt vom Namespace ab, der dem in diesen Anweisungen angegebenen Visual Studio Projektnamen entspricht. Wenn Sie einen anderen Projektnamen verwenden, wird der Code nur dann kompiliert, wenn Sie alle Namespaces so anpassen, dass Sie dem Visual Studio Projektnamen entsprechen, den Sie beim Erstellen des Projekts eingeben.
@@ -23,10 +23,10 @@ Bevor Sie fortfahren, installieren Sie einige zusätzliche NuGet-Pakete, die Sie
 Wählen Sie **Tools #a0 NuGet-Paket-Manager #a1-Paket-Manager-Konsole**aus. Geben Sie in der Paket-Manager-Konsole die folgenden Befehle ein.
 
 ```Powershell
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.DataGrid
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.Graph
-Install-Package Microsoft.Graph
+Install-Package Microsoft.Toolkit.Uwp.Ui.Controls -Version 5.1.1
+Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.DataGrid -Version 5.1.0
+Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.Graph -Version 5.1.0
+Install-Package Microsoft.Graph -Version 1.16.0
 ```
 
 ## <a name="design-the-app"></a>Entwerfen der APP
@@ -98,19 +98,7 @@ Fügen Sie nun eine weitere XAML-Seite für die Ansicht Home hinzu. Klicken Sie 
 </StackPanel>
 ```
 
-Erweitern Sie nun Haupt **. XAML** im Projektmappen `MainPage.xaml.cs`-Explorer, und öffnen Sie. Fügen Sie dem `MainPage()` Konstruktor **nach** der `this.InitializeComponent();` -Verbindung den folgenden Code hinzu.
-
-```cs
-// Initialize auth state to false
-SetAuthState(false);
-
-// Navigate to HomePage.xaml
-RootFrame.Navigate(typeof(HomePage));
-```
-
-Wenn die APP erstmalig gestartet wird, wird der Authentifizierungsstatus in `false` initialisiert und zur Startseite navigiert.
-
-Fügen Sie der `MainPage` Klasse die folgende Funktion hinzu, um den Authentifizierungsstatus zu verwalten.
+Erweitern Sie nun Haupt **. XAML** im Projektmappen `MainPage.xaml.cs`-Explorer, und öffnen Sie. Fügen Sie der `MainPage` Klasse die folgende Funktion hinzu, um den Authentifizierungsstatus zu verwalten.
 
 ```cs
 private void SetAuthState(bool isAuthenticated)
@@ -121,6 +109,18 @@ private void SetAuthState(bool isAuthenticated)
     Calendar.IsEnabled = isAuthenticated;
 }
 ```
+
+Fügen Sie dem `MainPage()` Konstruktor **nach** der `this.InitializeComponent();` -Verbindung den folgenden Code hinzu.
+
+```cs
+// Initialize auth state to false
+SetAuthState(false);
+
+// Navigate to HomePage.xaml
+RootFrame.Navigate(typeof(HomePage));
+```
+
+Wenn die APP erstmalig gestartet wird, wird der Authentifizierungsstatus in `false` initialisiert und zur Startseite navigiert.
 
 Fügen Sie den folgenden Ereignishandler hinzu, um die angeforderte Seite zu laden, wenn der Benutzer ein Element aus der Navigationsansicht auswählt.
 
