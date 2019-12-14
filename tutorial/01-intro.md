@@ -10,7 +10,7 @@ In diesem Lernprogramm erfahren Sie, wie Sie eine universelle Windows Platform (
 Bevor Sie dieses Lernprogramm starten, sollten Sie [Visual Studio](https://visualstudio.microsoft.com/vs/) auf einem Computer mit Windows 10 mit [aktivierter Entwicklermodus](https://docs.microsoft.com/windows/uwp/get-started/enable-your-device-for-development)installiert haben. Wenn Sie nicht über Visual Studio verfügen, besuchen Sie den vorherigen Link für Downloadoptionen.
 
 > [!NOTE]
-> Dieses Lernprogramm wurde mit Visual Studio 2019 Version 16.1.5 geschrieben. Die Schritte in diesem Leitfaden funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
+> Dieses Lernprogramm wurde mit Visual Studio 2019 Version 16.4.0 geschrieben. Die Schritte in diesem Leitfaden funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
 
 ## <a name="watch-the-tutorial"></a>Das Lernprogramm ansehen
 
