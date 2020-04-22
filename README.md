@@ -8,19 +8,11 @@ In dieser Übungseinheit erstellen Sie mithilfe des Azure AD v2-Authentifizierun
 
 - [UWP Microsoft Graph-Lernprogramm](https://docs.microsoft.com/graph/tutorials/uwp)
 
-## <a name="demos"></a>Demos
-
-Das [Demos](./Demos) -Verzeichnis in diesem Repository enthält Kopien des Projekts, die dem Ausführen einzelner Abschnitte des Lernprogramms entsprechen. Wenn Sie lediglich einen bestimmten Abschnitt des Lernprogramms Demo ausführen möchten, können Sie mit der Version aus dem vorherigen Abschnitt beginnen.
-
-- [01-Create-App](Demos/01-create-app): abgeschlossen [Erstellen einer universellen Windows-Plattform (UWP)](https://docs.microsoft.com/graph/tutorials/uwp?tutorial-step=1) -Webanwendung
-- [02-Add-Aad-auth](Demos/02-add-aad-auth): abgeschlossene [Add Azure AD-Authentifizierung](https://docs.microsoft.com/graph/tutorials/uwp?tutorial-step=3)
-- [03-Add-MSGraph](Demos/03-add-msgraph): abgeschlossene [Abrufen von Kalenderdaten](https://docs.microsoft.com/graph/tutorials/uwp?tutorial-step=4)
-
 ## <a name="completed-sample"></a>Abgeschlossenes Beispiel
 
 Wenn Sie das fertige Beispiel nur generieren möchten, indem Sie dieser Übungseinheit folgen, können Sie es hier finden.
 
-- [Fertig gestelltes Projekt](Demos/03-add-msgraph)
+- [Fertig gestelltes Projekt](demo)
 
 ## <a name="watch-the-module"></a>Modul ansehen
 
@@ -38,11 +30,12 @@ Dieses Modul wurde aufgezeichnet und steht im Office-Entwicklungs Kanal YouTube 
 
 | Version |        Datum        |                       Kommentare                       |
 | ------- | ------------------ | ---------------------------------------------------- |
+| 1,10    | 18. März 2020     | Aktualisiertes Lernprogramm                                   |
 | 1.9     | 18. Juni 2019      | Readme in aktualisierte Screencast-Aufzeichnung aktualisiert     |
 | 1,8     | 24. Mai 2019       | 2019Q4-Inhaltsaktualisierung                               |
 | 1.7     | 6. März 2019      | 2019Q3-Inhaltsaktualisierung                               |
 | 1.6     | 19. Dezember 2018  | 2019Q2-Inhaltsaktualisierung                               |
-| 1.5     | 27. November 2018  | Onboarding zu docs.Microsoft.com/Graph                |
+| 1,5     | 27. November 2018  | Onboarding zu docs.Microsoft.com/Graph                |
 | 1.4     | 2. November 2018   | Module wurden für Konsistenz mit anderen Schulungen überarbeitet. |
 | 1.3     | 20. September 2018 | 2019Q1-Inhaltsaktualisierung                               |
 | 1.2     | 28. Juni 2018      | Screencast hinzugefügt.                                    |
@@ -51,7 +44,7 @@ Dieses Modul wurde aufgezeichnet und steht im Office-Entwicklungs Kanal YouTube 
 
 ## <a name="disclaimer"></a>Verzichtserklärung
 
-**Dieser Code wird ohne __ jegliche ausdrückliche oder implizite Gewährleistung bereitgestellt, einschließlich impliziter Garantien für die Eignung für einen bestimmten Zweck, die Marktgängigkeit oder die Nichtverletzung.**
+**Dieser Code wird ohne jegliche ausdrückliche oder implizite _Gewährleistung bereit_ gestellt, einschließlich impliziter Garantien für die Eignung für einen bestimmten Zweck, die Marktgängigkeit oder die Nichtverletzung.**
 
 <!-- markdownlint-disable MD033 -->
 <img src="https://telemetry.sharepointpnp.com/msgraph-training-uwp" />

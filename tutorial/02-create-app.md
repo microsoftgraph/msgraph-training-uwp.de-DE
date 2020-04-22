@@ -1,150 +1,99 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-Öffnen Sie Visual Studio, und wählen Sie **Neues Projekt erstellen**aus. Wählen Sie die Option **leere app (universelle Windows)** aus, die C# verwendet, und wählen Sie dann **weiter**aus.
+In diesem Abschnitt erstellen Sie eine neue UWP-app.
 
-![Visual Studio 2019 Dialogfeld "Neues Projekt erstellen"](./images/vs-create-new-project.png)
+1. Öffnen Sie Visual Studio, und wählen Sie **Neues Projekt erstellen**. Wählen Sie die Option **leere app (universelle Windows)** aus, die C# verwendet, und wählen Sie dann **weiter**aus.
 
-Geben Sie im Dialogfeld **Neues Projekt konfigurieren** in `graph-tutorial` das Feld **Projektname** ein, und wählen Sie dann **Erstellen**aus.
+    ![Visual Studio 2019 Dialogfeld "Neues Projekt erstellen"](./images/vs-create-new-project.png)
 
-![Visual Studio 2019 Dialogfeld "Neues Projekt konfigurieren"](./images/vs-configure-new-project.png)
+1. Geben Sie im Dialogfeld **Neues Projekt konfigurieren** in `GraphTutorial` das Feld **Projektname** ein, und wählen Sie dann **Erstellen**aus.
 
-> [!IMPORTANT]
-> Stellen Sie sicher, dass Sie genau den gleichen Namen für das Visual Studio Projekt eingeben, das in diesen Übungseinheiten angegeben ist. Der Visual Studio Projektname wird Teil des Namespaces im Code. Der Code in diesen Anweisungen hängt vom Namespace ab, der dem in diesen Anweisungen angegebenen Visual Studio Projektnamen entspricht. Wenn Sie einen anderen Projektnamen verwenden, wird der Code nur dann kompiliert, wenn Sie alle Namespaces so anpassen, dass Sie dem Visual Studio Projektnamen entsprechen, den Sie beim Erstellen des Projekts eingeben.
+    ![Visual Studio 2019 Dialogfeld "Neues Projekt konfigurieren"](./images/vs-configure-new-project.png)
 
-Wählen Sie **OK** aus. Stellen Sie im Dialogfeld **Neues universelles Windows-Platt Form Projekt** sicher, dass die `Windows 10 Fall Creators Update (10.0; Build 16299)` **minimale Version** auf oder höher festgelegt ist, und wählen Sie **OK**aus.
+    > [!IMPORTANT]
+    > Stellen Sie sicher, dass Sie genau den gleichen Namen für das Visual Studio Projekt eingeben, das in diesen Übungseinheiten angegeben ist. Der Visual Studio-Projektname wird Teil des Namespace im Code. Der Code in diesen Anweisungen hängt vom Namespace ab, der mit dem in diesen Anweisungen angegebenen Visual Studio-Projektnamen übereinstimmt. Wenn Sie einen anderen Projektnamen verwenden, wird der Code nicht kompiliert, es sei denn, Sie passen alle Namespaces so an, dass Sie dem von Ihnen beim Erstellen des Projekts eingegebenen Visual Studio-Projektnamen entsprechen.
+
+1. Wählen Sie **OK** aus. Stellen Sie im Dialogfeld **Neues universelles Windows-Platt Form Projekt** sicher, dass die `Windows 10, Version 1809 (10.0; Build 17763)` **minimale Version** auf oder höher festgelegt ist, und wählen Sie **OK**aus.
+
+## <a name="install-nuget-packages"></a>Installieren der NuGet-Pakete
 
 Bevor Sie fortfahren, installieren Sie einige zusätzliche NuGet-Pakete, die Sie später verwenden werden.
 
 - [Microsoft. Toolkit. UWP. UI. Controls](https://www.nuget.org/packages/Microsoft.Toolkit.Uwp.Ui.Controls/) zum Hinzufügen einiger UI-Steuerelemente für in-App-Benachrichtigungen und lade Indikatoren.
 - [Microsoft. Toolkit. UWP. UI. Controls. DataGrid](https://www.nuget.org/packages/Microsoft.Toolkit.Uwp.Ui.Controls.DataGrid/) zum Anzeigen der von Microsoft Graph zurückgegebenen Informationen.
-- [Microsoft. Toolkit. UWP. UI. Controls. Graph](https://www.nuget.org/packages/Microsoft.Toolkit.Uwp.Ui.Controls.Graph/) zur Behandlung von Anmelde-und Zugriffstoken abrufen.
-- [Microsoft. Graph](https://www.nuget.org/packages/Microsoft.Graph/) für das tätigen von Anrufen an Microsoft Graph.
+- [Microsoft. Toolkit. Graph. Controls](https://www.nuget.org/packages/Microsoft.Toolkit.Graph.Controls) zum Behandeln von Anmelde-und Zugriffstoken abrufen.
 
-Wählen Sie **Tools #a0 NuGet-Paket-Manager #a1-Paket-Manager-Konsole**aus. Geben Sie in der Paket-Manager-Konsole die folgenden Befehle ein.
+1. Wählen Sie **Extras > NuGet-Paket-Manager > Paket-Manager-Konsole**aus. Geben Sie in der Paket-Manager-Konsole die folgenden Befehle ein:
 
-```Powershell
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls -Version 6.0.0
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.DataGrid -Version 6.0.0
-Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.Graph -Version 6.0.0
-Install-Package Microsoft.Graph -Version 1.20.0
-```
+    ```powershell
+    Install-Package Microsoft.Toolkit.Uwp.Ui.Controls -Version 6.0.0
+    Install-Package Microsoft.Toolkit.Uwp.Ui.Controls.DataGrid -Version 6.0.0
+    Install-Package Microsoft.Toolkit.Graph.Controls -IncludePrerelease
+    ```
 
-## <a name="design-the-app"></a>Entwerfen der APP
+## <a name="design-the-app"></a>Entwerfen der App
 
-Fügen Sie zunächst eine Variable auf Anwendungsebene hinzu, um den Authentifizierungsstatus nachzuverfolgen. Erweitern Sie im Projektmappen-Explorer den Knoten **app. XAML** , und öffnen Sie **app.XAML.cs**. Fügen Sie der- `App` Klasse die folgende Eigenschaft hinzu.
+In diesem Abschnitt erstellen Sie die Benutzeroberfläche für die app.
 
-```cs
-public bool IsAuthenticated { get; set; }
-```
+1. Fügen Sie zunächst eine Variable auf Anwendungsebene hinzu, um den Authentifizierungsstatus nachzuverfolgen. Erweitern Sie im Projektmappen-Explorer den Knoten **app. XAML** , und öffnen Sie **app.XAML.cs**. Fügen Sie der `App`-Klasse die folgende Eigenschaft hinzu.
 
-Definieren Sie als nächstes das Layout für die Hauptseite. Öffnen `MainPage.xaml` Sie den gesamten Inhalt, und ersetzen Sie ihn durch Folgendes.
+    ```csharp
+    public bool IsAuthenticated { get; set; }
+    ```
 
-```xml
-<Page
-    x:Class="graph_tutorial.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:graph_tutorial"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:graphControls="using:Microsoft.Toolkit.Uwp.UI.Controls.Graph"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+1. Definieren Sie das Layout für die Hauptseite. Öffnen `MainPage.xaml` Sie den gesamten Inhalt, und ersetzen Sie ihn durch Folgendes.
 
-    <Grid>
-        <NavigationView x:Name="NavView"
-            IsSettingsVisible="False"
-            ItemInvoked="NavView_ItemInvoked">
+    :::code language="xaml" source="../demo/GraphTutorial/MainPage.xaml" id="MainPageXamlSnippet":::
 
-            <NavigationView.Header>
-                <graphControls:AadLogin x:Name="Login"
-                    HorizontalAlignment="Left"
-                    View="SmallProfilePhotoLeft"
-                    AllowSignInAsDifferentUser="False"
-                    />
-            </NavigationView.Header>
+    Dies definiert eine grundlegende [NavigationView](/uwp/api/windows.ui.xaml.controls.navigationview) mit **Start** -und **Kalender** Navigationslinks, die als Hauptansicht der APP fungieren. Außerdem wird ein [LoginButton](https://github.com/windows-toolkit/Graph-Controls) -Steuerelement in der Kopfzeile der Ansicht hinzugefügt. Mit diesem Steuerelement kann sich der Benutzer an-und abmelden. Das Steuerelement ist noch nicht vollständig aktiviert, Sie werden es in einer späteren Übung konfigurieren.
 
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" x:Name="Home" Tag="home">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE10F;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem Content="Calendar" x:Name="Calendar" Tag="calendar">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE163;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
+1. Klicken Sie mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt im Projektmappen-Explorer, und wählen Sie **> neues Element hinzufügen aus...**. Wählen Sie **leere Seite**aus `HomePage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus. Ersetzen Sie das `<Grid>` vorhandene Element in der Datei durch Folgendes.
 
-            <StackPanel>
-                <controls:InAppNotification x:Name="Notification" ShowDismissButton="true" />
-                <Frame x:Name="RootFrame" Margin="24, 0" />
-            </StackPanel>
-        </NavigationView>
-    </Grid>
-</Page>
-```
+    :::code language="xaml" source="../demo/GraphTutorial/HomePage.xaml" id="HomePageGridSnippet" highlight="2-5":::
 
-Dies definiert eine grundlegende [NavigationView](https://docs.microsoft.com/uwp/api/windows.ui.xaml.controls.navigationview) mit **Start** -und **Kalender** Navigationslinks, die als Hauptansicht der APP fungieren. Außerdem wird ein [AadLogin](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.uwp.ui.controls.graph.aadlogin?view=win-comm-toolkit-dotnet-stable) -Steuerelement in der Kopfzeile der Ansicht hinzugefügt. Mit diesem Steuerelement kann sich der Benutzer an-und abmelden. Das Steuerelement ist noch nicht vollständig aktiviert, Sie werden es in einer späteren Übung konfigurieren.
+1. Erweitern Sie Haupt **. XAML** im Projektmappen `MainPage.xaml.cs`-Explorer, und öffnen Sie. Fügen Sie der `MainPage` Klasse die folgende Funktion hinzu, um den Authentifizierungsstatus zu verwalten.
 
-Fügen Sie nun eine weitere XAML-Seite für die Ansicht Home hinzu. Klicken Sie mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt im Projektmappen-Explorer, und wählen Sie **#a0 neues Element hinzufügen aus...**. Wählen Sie **leere Seite**aus `HomePage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus. Fügen Sie den folgenden Code innerhalb `<Grid>` des-Elements in der Datei hinzu.
+    :::code language="csharp" source="../demo/GraphTutorial/MainPage.xaml.cs" id="SetAuthStateSnippet":::
 
-```xml
-<StackPanel>
-    <TextBlock FontSize="44" FontWeight="Bold" Margin="0, 12">Microsoft Graph UWP Tutorial</TextBlock>
-    <TextBlock x:Name="HomePageMessage">Please sign in to continue.</TextBlock>
-</StackPanel>
-```
+1. Fügen Sie dem `MainPage()` Konstruktor **nach** der `this.InitializeComponent();` -Verbindung den folgenden Code hinzu.
 
-Erweitern Sie nun Haupt **. XAML** im Projektmappen `MainPage.xaml.cs`-Explorer, und öffnen Sie. Fügen Sie der `MainPage` Klasse die folgende Funktion hinzu, um den Authentifizierungsstatus zu verwalten.
+    ```csharp
+    // Initialize auth state to false
+    SetAuthState(false);
 
-```cs
-private void SetAuthState(bool isAuthenticated)
-{
-    (App.Current as App).IsAuthenticated = isAuthenticated;
+    // Configure MSAL provider
+    // TEMPORARY
+    MsalProvider.ClientId = "11111111-1111-1111-1111-111111111111";
 
-    // Toggle controls that require auth
-    Calendar.IsEnabled = isAuthenticated;
-}
-```
+    // Navigate to HomePage.xaml
+    RootFrame.Navigate(typeof(HomePage));
+    ```
 
-Fügen Sie dem `MainPage()` Konstruktor **nach** der `this.InitializeComponent();` -Verbindung den folgenden Code hinzu.
+    Wenn die APP erstmalig gestartet wird, wird der Authentifizierungsstatus in `false` initialisiert und zur Startseite navigiert.
 
-```cs
-// Initialize auth state to false
-SetAuthState(false);
+1. Fügen Sie den folgenden Ereignishandler hinzu, um die angeforderte Seite zu laden, wenn der Benutzer ein Element aus der Navigationsansicht auswählt.
 
-// Navigate to HomePage.xaml
-RootFrame.Navigate(typeof(HomePage));
-```
-
-Wenn die APP erstmalig gestartet wird, wird der Authentifizierungsstatus in `false` initialisiert und zur Startseite navigiert.
-
-Fügen Sie den folgenden Ereignishandler hinzu, um die angeforderte Seite zu laden, wenn der Benutzer ein Element aus der Navigationsansicht auswählt.
-
-```cs
-private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-{
-    var invokedItem = args.InvokedItem as string;
-
-    switch (invokedItem.ToLower())
+    ```csharp
+    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        case "calendar":
-            throw new NotImplementedException();
-            break;
-        case "home":
-        default:
-            RootFrame.Navigate(typeof(HomePage));
-            break;
+        var invokedItem = args.InvokedItem as string;
+
+        switch (invokedItem.ToLower())
+        {
+            case "calendar":
+                throw new NotImplementedException();
+                break;
+            case "home":
+            default:
+                RootFrame.Navigate(typeof(HomePage));
+                break;
+        }
     }
-}
-```
+    ```
 
-Speichern Sie alle Änderungen, drücken Sie **F5** , oder wählen Sie **Debug #a0 starten des Debuggings** in Visual Studio.
+1. Speichern Sie alle Änderungen, drücken Sie **F5** , oder wählen Sie **Debug > starten des Debuggings** in Visual Studio.
 
-> [!NOTE]
-> Stellen Sie sicher, dass Sie die entsprechende Konfiguration für Ihren Computer auswählen (Arm, x64, x86).
+    > [!NOTE]
+    > Stellen Sie sicher, dass Sie die entsprechende Konfiguration für Ihren Computer auswählen (Arm, x64, x86).
 
-![Screenshot der Homepage](./images/create-app-01.png)
+    ![Screenshot der Homepage](./images/create-app-01.png)

@@ -1,96 +1,44 @@
 <!-- markdownlint-disable MD002 MD041 -->
 
-In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung, um die Authentifizierung mit Azure AD zu unterstützen. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken zum Aufrufen von Microsoft Graph zu erhalten. In diesem Schritt werden Sie das [AadLogin](https://docs.microsoft.com/dotnet/api/microsoft.toolkit.uwp.ui.controls.graph.aadlogin?view=win-comm-toolkit-dotnet-stable) -Steuerelement aus dem [Windows Community Toolkit](https://github.com/Microsoft/WindowsCommunityToolkit) in die Anwendung integrieren.
+In dieser Übung erweitern Sie die Anwendung aus der vorherigen Übung, um die Authentifizierung mit Azure AD zu unterstützen. Dies ist erforderlich, um das erforderliche OAuth-Zugriffstoken zum Aufrufen von Microsoft Graph zu erhalten. In diesem Schritt werden Sie das **LoginButton** -Steuerelement aus den [Windows Graph-Steuerelementen](https://github.com/windows-toolkit/Graph-Controls) in die Anwendung integrieren.
 
-Klicken Sie mit der rechten Maustaste auf das **Graph-Tutorial-** Projekt im Projektmappen-Explorer, und wählen Sie **#a0 neues Element hinzufügen aus...**. Wählen Sie **Ressourcendatei (. resw)**, benennen Sie `OAuth.resw` die Datei, und wählen Sie **Hinzufügen**aus. Wenn die neue Datei in Visual Studio geöffnet wird, erstellen Sie zwei Ressourcen wie folgt.
+1. Klicken Sie mit der rechten Maustaste auf das **GraphTutorial** -Projekt im Projektmappen-Explorer, und wählen Sie **> neues Element hinzufügen**aus. Wählen Sie **Ressourcendatei (. resw)**, benennen Sie `OAuth.resw` die Datei, und wählen Sie **Hinzufügen**aus. Wenn die neue Datei in Visual Studio geöffnet wird, erstellen Sie zwei Ressourcen wie folgt.
 
-- **Name:** `AppId`, **Wert:** die APP-ID, die Sie im Anwendungs Registrierungs Portal generiert haben.
-- **Name:** `Scopes`, **Wert:**`User.Read Calendars.Read`
+    - **Name:** `AppId`, **Wert:** die APP-ID, die Sie im Anwendungs Registrierungs Portal generiert haben.
+    - **Name:** `Scopes`, **Wert:**`User.Read Calendars.Read`
 
-![Ein Screenshot der Datei OAuth. resw im Visual Studio-Editor](./images/edit-resources-01.png)
+    ![Ein Screenshot der Datei OAuth. resw im Visual Studio-Editor](./images/edit-resources-01.png)
 
-> [!IMPORTANT]
-> Wenn Sie die Quellcodeverwaltung wie git verwenden, wäre es jetzt ein guter Zeitpunkt, die Datei `OAuth.resw` aus der Quellcodeverwaltung auszuschließen, um unbeabsichtigtes Auslaufen ihrer APP-ID zu vermeiden.
+    > [!IMPORTANT]
+    > Wenn Sie die Quellcodeverwaltung wie git verwenden, wäre es jetzt ein guter Zeitpunkt, die Datei `OAuth.resw` aus der Quellcodeverwaltung auszuschließen, um unbeabsichtigtes Auslaufen ihrer APP-ID zu vermeiden.
 
-## <a name="configure-the-aadlogin-control"></a>Konfigurieren des AadLogin-Steuerelements
+## <a name="configure-the-loginbutton-control"></a>Konfigurieren des LoginButton-Steuerelements
 
-Beginnen Sie mit dem Hinzufügen von Code, um die Werte aus der Ressourcendatei zu lesen. Öffnen `MainPage.xaml.cs` Sie und fügen Sie `using` die folgende Anweisung am Anfang der Datei hinzu.
+1. Öffnen `MainPage.xaml.cs` Sie und fügen Sie `using` die folgende Anweisung am Anfang der Datei hinzu.
 
-```cs
-using Microsoft.Toolkit.Services.MicrosoftGraph;
-```
+    ```csharp
+    using Microsoft.Toolkit.Graph.Providers;
+    ```
 
-Ersetzen Sie die Zeile `RootFrame.Navigate(typeof(HomePage));` durch den folgenden Code.
+1. Ersetzen Sie den vorhandenen Konstruktor durch Folgendes.
 
-```cs
-// Load OAuth settings
-var oauthSettings = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView("OAuth");
-var appId = oauthSettings.GetString("AppId");
-var scopes = oauthSettings.GetString("Scopes");
+    :::code language="csharp" source="../demo/GraphTutorial/MainPage.xaml.cs" id="ConstructorSnippet":::
 
-if (string.IsNullOrEmpty(appId) || string.IsNullOrEmpty(scopes))
-{
-    Notification.Show("Could not load OAuth Settings from resource file.");
-}
-else
-{
-    // Initialize Graph
-    MicrosoftGraphService.Instance.AuthenticationModel = MicrosoftGraphEnums.AuthenticationModel.V2;
-    MicrosoftGraphService.Instance.Initialize(appId,
-        MicrosoftGraphEnums.ServicesToInitialize.UserProfile,
-        scopes.Split(' '));
+    Dieser Code lädt die Einstellungen aus `OAuth.resw` und initialisiert den MSAL-Anbieter mit diesen Werten.
 
-    // Navigate to HomePage.xaml
-    RootFrame.Navigate(typeof(HomePage));
-}
-```
+1. Fügen Sie nun einen Ereignishandler für `ProviderUpdated` das Ereignis auf `ProviderManager`der hinzu. Fügen Sie die folgende Funktion zur `MainPage`-Klasse hinzu:
 
-Dieser Code lädt die Einstellungen aus `OAuth.resw` und initialisiert die globale Instanz von `MicrosoftGraphService` mit diesen Werten.
+    :::code language="csharp" source="../demo/GraphTutorial/MainPage.xaml.cs" id="ProviderUpdatedSnippet":::
 
-Fügen Sie nun einen Ereignishandler für `SignInCompleted` das Ereignis für `AadLogin` das Steuerelement hinzu. Öffnen Sie `MainPage.xaml` die Datei, und ersetzen `<graphControls:AadLogin>` Sie das vorhandene Element durch Folgendes.
+    Dieses Ereignis wird ausgelöst, wenn sich der Anbieter ändert oder wenn sich der Anbieterstatus ändert.
 
-```xml
-<graphControls:AadLogin x:Name="Login"
-    HorizontalAlignment="Left"
-    View="SmallProfilePhotoLeft"
-    AllowSignInAsDifferentUser="False"
-    SignInCompleted="Login_SignInCompleted"
-    SignOutCompleted="Login_SignOutCompleted"
-    />
-```
+1. Erweitern Sie im Projektmappen-Explorer **Homepage. XAML** , und öffnen `HomePage.xaml.cs`Sie. Ersetzen Sie den vorhandenen Konstruktor durch Folgendes.
 
-Fügen Sie dann die folgenden Funktionen zur `MainPage` Klasse in `MainPage.xaml.cs`hinzu.
+    :::code language="csharp" source="../demo/GraphTutorial/HomePage.xaml.cs" id="ConstructorSnippet":::
 
-```cs
-private void Login_SignInCompleted(object sender, Microsoft.Toolkit.Uwp.UI.Controls.Graph.SignInEventArgs e)
-{
-    // Set the auth state
-    SetAuthState(true);
-    // Reload the home page
-    RootFrame.Navigate(typeof(HomePage));
-}
+1. Starten Sie die APP neu, und klicken Sie oben in der APP auf das **Anmelde** Steuerelement. Nachdem Sie sich angemeldet haben, sollte die Benutzeroberfläche geändert werden, um anzugeben, dass Sie sich erfolgreich angemeldet haben.
 
-private void Login_SignOutCompleted(object sender, EventArgs e)
-{
-    // Set the auth state
-    SetAuthState(false);
-    // Reload the home page
-    RootFrame.Navigate(typeof(HomePage));
-}
-```
+    ![Ein Screenshot der APP nach der Anmeldung](./images/add-aad-auth-01.png)
 
-Erweitern Sie schließlich im Projektmappen-Explorer **Homepage. XAML** , und öffnen `HomePage.xaml.cs`Sie. Fügen Sie den folgenden Code nach `this.InitializeComponent();` der Codezeile hinzu.
-
-```cs
-if ((App.Current as App).IsAuthenticated)
-{
-    HomePageMessage.Text = "Welcome! Please use the menu to the left to select a view.";
-}
-```
-
-Starten Sie die APP neu, und klicken Sie oben in der APP auf das **Anmelde** Steuerelement. Nachdem Sie sich angemeldet haben, sollte die Benutzeroberfläche geändert werden, um anzugeben, dass Sie sich erfolgreich angemeldet haben.
-
-![Ein Screenshot der APP nach der Anmeldung](./images/add-aad-auth-01.png)
-
-> [!NOTE]
-> Das `AadLogin` Steuerelement implementiert die Logik des Speicherns und Aktualisierens des Zugriffstokens für Sie. Die Token werden im sicheren Speicher gespeichert und bei Bedarf aktualisiert.
+    > [!NOTE]
+    > Das `ButtonLogin` Steuerelement implementiert die Logik des Speicherns und Aktualisierens des Zugriffstokens für Sie. Die Token werden im sicheren Speicher gespeichert und bei Bedarf aktualisiert.
