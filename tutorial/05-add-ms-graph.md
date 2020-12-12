@@ -4,7 +4,7 @@ In dieser Übung werden Sie das Microsoft Graph in die Anwendung integrieren. F�
 
 ## <a name="get-calendar-events-from-outlook"></a>Abrufen von Kalenderereignissen von Outlook
 
-1. Fügen Sie eine neue Seite für die Kalenderansicht hinzu. Klicken Sie mit der rechten Maustaste auf das **GraphTutorial** -Projekt im Projektmappen-Explorer, und wählen Sie **> neues Element hinzufügen**aus. Wählen Sie **leere Seite**aus `CalendarPage.xaml` , geben Sie in das Feld **Name** ein, und wählen Sie **Hinzufügen**aus.
+1. Fügen Sie eine neue Seite für die Kalenderansicht hinzu. Klicken Sie mit der rechten Maustaste auf das **GraphTutorial** -Projekt im Projektmappen-Explorer, und wählen Sie **> neues Element hinzufügen** aus. Wählen Sie **leere Seite** aus, geben Sie `CalendarPage.xaml` in das Feld **Name** ein, und wählen Sie **Hinzufügen** aus.
 
 1. Öffnen `CalendarPage.xaml` Sie und fügen Sie die folgende im vorhandenen `<Grid>` Element hinzu.
 
@@ -12,15 +12,16 @@ In dieser Übung werden Sie das Microsoft Graph in die Anwendung integrieren. F�
     <TextBlock x:Name="Events" TextWrapping="Wrap"/>
     ```
 
-1. Öffnen `CalendarPage.xaml.cs` Sie und fügen Sie `using` die folgenden Anweisungen am Anfang der Datei hinzu.
+1. Öffnen `CalendarPage.xaml.cs` Sie und fügen Sie die folgenden `using` Anweisungen am Anfang der Datei hinzu.
 
     ```csharp
+    using Microsoft.Graph;
     using Microsoft.Toolkit.Graph.Providers;
     using Microsoft.Toolkit.Uwp.UI.Controls;
     using Newtonsoft.Json;
     ```
 
-1. Fügen Sie der `CalendarPage` -Klasse die folgenden Funktionen hinzu.
+1. Fügen Sie der-Klasse die folgenden Funktionen hinzu `CalendarPage` .
 
     ```csharp
     private void ShowNotification(string message)
@@ -41,33 +42,87 @@ In dieser Übung werden Sie das Microsoft Graph in die Anwendung integrieren. F�
 
         try
         {
+            // Get the user's mailbox settings to determine
+            // their time zone
+            var user = await graphClient.Me.Request()
+                .Select(u => new { u.MailboxSettings })
+                .GetAsync();
+
+            var startOfWeek = GetUtcStartOfWeekInTimeZone(DateTime.Today, user.MailboxSettings.TimeZone);
+            var endOfWeek = startOfWeek.AddDays(7);
+
+            var queryOptions = new List<QueryOption>
+            {
+                new QueryOption("startDateTime", startOfWeek.ToString("o")),
+                new QueryOption("endDateTime", endOfWeek.ToString("o"))
+            };
+
             // Get the events
-            var events = await graphClient.Me.Events.Request()
-                .Select("subject,organizer,start,end")
-                .OrderBy("createdDateTime DESC")
+            var events = await graphClient.Me.CalendarView.Request(queryOptions)
+                .Header("Prefer", $"outlook.timezone=\"{user.MailboxSettings.TimeZone}\"")
+                .Select(ev => new
+                {
+                    ev.Subject,
+                    ev.Organizer,
+                    ev.Start,
+                    ev.End
+                })
+                .OrderBy("start/dateTime")
+                .Top(50)
                 .GetAsync();
 
             // TEMPORARY: Show the results as JSON
             Events.Text = JsonConvert.SerializeObject(events.CurrentPage);
         }
-        catch(Microsoft.Graph.ServiceException ex)
+        catch (ServiceException ex)
         {
             ShowNotification($"Exception getting events: {ex.Message}");
         }
 
         base.OnNavigatedTo(e);
     }
+
+    private static DateTime GetUtcStartOfWeekInTimeZone(DateTime today, string timeZoneId)
+    {
+        TimeZoneInfo userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+
+        // Assumes Sunday as first day of week
+        int diff = System.DayOfWeek.Sunday - today.DayOfWeek;
+
+        // create date as unspecified kind
+        var unspecifiedStart = DateTime.SpecifyKind(today.AddDays(diff), DateTimeKind.Unspecified);
+
+        // convert to UTC
+        return TimeZoneInfo.ConvertTimeToUtc(unspecifiedStart, userTimeZone);
+    }
     ```
 
     Verwenden Sie den Code in `OnNavigatedTo` ist doing.
 
-    - Die URL, die aufgerufen wird, lautet `/v1.0/me/events`.
-    - Die `Select`-Funktion beschränkt die Felder, die für jedes Ereignis zurückgegeben werden, auf nur diejenigen, die von der Ansicht tatsächlich verwendet werden.
-    - Die `OrderBy`-Funktion sortiert die Ergebnisse nach Datum und Uhrzeit ihrer Erstellung, wobei das aktuellste Element zuerst angezeigt wird.
+    - Die URL, die aufgerufen wird, lautet `/me/calendarview`.
+        - Die `startDateTime` `endDateTime` Parameter und definieren den Anfang und das Ende der Kalenderansicht.
+        - Der `Prefer: outlook.timezone` Header bewirkt `start` , dass die und der `end` Ereignisse in der Zeitzone des Benutzers zurückgegeben werden.
+        - Die `Select` Funktion schränkt die für jedes Ereignis zurückgegebenen Felder auf diejenigen ein, die von der APP tatsächlich verwendet werden.
+        - Die `OrderBy` -Funktion sortiert die Ergebnisse nach Startdatum und-Uhrzeit.
+        - Die `Top` Funktion fordert die meisten 50-Ereignisse an.
 
-1. Ändern Sie `NavView_ItemInvoked` die-Methode `MainPage.xaml.cs` in der Datei, um `switch` die vorhandene Anweisung durch Folgendes zu ersetzen.
+1. Ändern `NavView_ItemInvoked` Sie die-Methode in der `MainPage.xaml.cs` Datei, um die vorhandene `switch` Anweisung durch Folgendes zu ersetzen.
 
-    :::code language="csharp" source="../demo/GraphTutorial/MainPage.xaml.cs" id="SwitchStatementSnippet" highlight="4":::
+    ```csharp
+    switch (invokedItem.ToLower())
+    {
+        case "new event":
+            throw new NotImplementedException();
+            break;
+        case "calendar":
+            RootFrame.Navigate(typeof(CalendarPage));
+            break;
+        case "home":
+        default:
+            RootFrame.Navigate(typeof(HomePage));
+            break;
+    }
+    ```
 
 Sie können nun die app ausführen, sich anmelden und im Menü auf der linken Seite auf das Navigationselement **Kalender** klicken. Es sollte ein JSON-Dump der Ereignisse im Kalender des Benutzers angezeigt werden.
 
@@ -117,7 +172,7 @@ Sie können nun die app ausführen, sich anmelden und im Menü auf der linken Se
     </Page>
     ```
 
-1. Öffnen `CalendarPage.xaml.cs` Sie die- `Events.Text = JsonConvert.SerializeObject(events.CurrentPage);` und ersetzen Sie die-Reihe durch Folgendes.
+1. Öffnen Sie `CalendarPage.xaml.cs` die-und ersetzen Sie die- `Events.Text = JsonConvert.SerializeObject(events.CurrentPage);` Reihe durch Folgendes.
 
     ```csharp
     EventList.ItemsSource = events.CurrentPage.ToList();
@@ -125,17 +180,17 @@ Sie können nun die app ausführen, sich anmelden und im Menü auf der linken Se
 
     Wenn Sie die APP jetzt ausführen und den Kalender auswählen, sollten Sie eine Liste der Ereignisse in einem Datenraster abrufen. Die **Start** **-und** Endwerte werden jedoch auf nicht benutzerfreundliche Weise angezeigt. Sie können steuern, wie diese Werte mithilfe eines [Wertkonverters](https://docs.microsoft.com/uwp/api/Windows.UI.Xaml.Data.IValueConverter)angezeigt werden.
 
-1. Klicken Sie mit der rechten Maustaste auf das **GraphTutorial** -Projekt im Projektmappen-Explorer, und wählen Sie **> Klasse hinzufügen**aus. Nennen Sie die `GraphDateTimeTimeZoneConverter.cs` Klasse, und wählen Sie **Hinzufügen**aus. Ersetzen Sie den gesamten Inhalt der Datei durch den folgenden Code.
+1. Klicken Sie mit der rechten Maustaste auf das **GraphTutorial** -Projekt im Projektmappen-Explorer, und wählen Sie **> Klasse hinzufügen** aus. Nennen Sie die Klasse `GraphDateTimeTimeZoneConverter.cs` , und wählen Sie **Hinzufügen** aus. Ersetzen Sie den gesamten Inhalt der Datei durch den folgenden Code.
 
     :::code language="csharp" source="../demo/GraphTutorial/GraphDateTimeTimeZoneConverter.cs" id="ConverterSnippet":::
 
-    Dieser Code verwendet die von Microsoft Graph zurückgegebene [dateTimeTimeZone](/graph/api/resources/datetimetimezone?view=graph-rest-1.0) -Struktur und analysiert `DateTimeOffset` Sie in ein Objekt. Anschließend wird der Wert in die Zeitzone des Benutzers konvertiert und der formatierte Wert zurückgegeben.
+    Dieser Code verwendet die von Microsoft Graph zurückgegebene [dateTimeTimeZone](/graph/api/resources/datetimetimezone?view=graph-rest-1.0) -Struktur und analysiert sie in ein `DateTimeOffset` Objekt. Anschließend wird der Wert in die Zeitzone des Benutzers konvertiert und der formatierte Wert zurückgegeben.
 
-1. Öffnen `CalendarPage.xaml` Sie, und fügen **before** Sie Folgendes `<Grid>` vor dem-Element hinzu.
+1. Öffnen `CalendarPage.xaml` Sie, und fügen Sie Folgendes **vor** dem- `<Grid>` Element hinzu.
 
     :::code language="xaml" source="../demo/GraphTutorial/CalendarPage.xaml" id="ResourcesSnippet":::
 
-1. Ersetzen Sie die letzten `DataGridTextColumn` beiden Elemente durch Folgendes.
+1. Ersetzen Sie die letzten beiden `DataGridTextColumn` Elemente durch Folgendes.
 
     :::code language="xaml" source="../demo/GraphTutorial/CalendarPage.xaml" id="BindingSnippet" highlight="4,9":::
 

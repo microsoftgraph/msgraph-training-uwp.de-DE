@@ -15,17 +15,7 @@ Sie sollten auch über ein persönliches Microsoft-Konto mit einem Postfach auf 
 - Sie können sich [für das Office 365 Entwicklerprogramm registrieren](https://developer.microsoft.com/office/dev-program) , um ein kostenloses Office 365-Abonnement zu erhalten.
 
 > [!NOTE]
-> Dieses Lernprogramm wurde mit Visual Studio 2019 Version 16.5.0 geschrieben. Die Schritte in diesem Leitfaden funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
-
-## <a name="watch-the-tutorial"></a>Das Lernprogramm ansehen
-
-Dieses Modul wurde aufgezeichnet und steht im YouTube-Kanal für die Office-Entwicklung zur Verfügung.
-
-<!-- markdownlint-disable MD033 MD034 -->
-<br/>
-
-> [!VIDEO https://www.youtube-nocookie.com/embed/oBYCBxkWMRA]
-<!-- markdownlint-enable MD033 MD034 -->
+> Dieses Lernprogramm wurde mit Visual Studio 2019 Version 16.8.3 geschrieben. Die Schritte in diesem Leitfaden funktionieren möglicherweise mit anderen Versionen, jedoch nicht getestet.
 
 ## <a name="feedback"></a>Feedback
 
